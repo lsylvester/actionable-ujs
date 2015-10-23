@@ -1,8 +1,9 @@
 # Actioncable::Ujs
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/actioncable/ujs`. To experiment with that code, run `bin/console` for an interactive prompt.
+WARNING: This is a work in progress and is currently incomplete. It is not ready for use.
 
-TODO: Delete this and the text above, and describe your gem
+Provides unobtrusive bindings for [Action Cable](https://github.com/rails/actioncable) 
+
 
 ## Installation
 
@@ -16,13 +17,50 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install actioncable-ujs
-
 ## Usage
 
-TODO: Write usage instructions here
+Add cable-ujs to your `app/assets/javascripts/application.js` file.
+
+    //= require cable_ujs
+
+Add a cable metatag to point to your Action Cable server
+
+    <meta name="cable-uri" value="ws://localhost:28080">
+
+Then, start creating subscriptions by adding `data-cable-subscribe` attributes your tags, with the value being the name of the channel you want to subscribe to.
+
+
+    <div data-cable-subscribe="ChatChannel">
+      ...
+    </div>
+
+You can also create a subscribion using extra parameters by JSON encoding a object.
+
+   <div data-cable-subscribe="{&quot;channel&quote;: &quote;ChatChannel&quote;, &quot;room&quote;: &quote;Best Room&quote;}">
+      ...
+    </div>
+
+Once you have created a subscription, the element will start triggering `cable:received` events whenever data is broadcast through the channel. You can subscribe to these events with something like
+
+    $(document).on "cabel:received", "#chat", (data)->
+      # Do stuff with data
+
+### Performing Actions
+
+You can perform actions on subscriptions that you have made by triggering events on the elements. To perform a action on a subscription trigger the `cable:perform` events, passing in the action name as the first parameter. Additional data can be passed in through the second parameter.
+
+    $("#chat").trigger('cable:perform', "appearOn", "Some Room")
+
+You can add `data-cabel-perform` attributes to elements within the subscription element to automatically trigger `cable:perform` events.
+
+A `a` or `button` element with `data-cable-perform` with perform the action when clicked.
+
+    <a data-cable-perform="away">Appear Away</a>
+
+A  `form` element will trigger perform the action when it is submitted, and `input`, `textarea` or  `select` element will trigger the event on change.
+
+You can change the event that triggers the action using the `data-cable-on` attribute. Any element with `data-cable-on` can trigger actions on the parent attribute.
+
 
 ## Development
 
