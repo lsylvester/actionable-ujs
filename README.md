@@ -36,7 +36,7 @@ Then, start creating subscriptions by adding `data-cable-subscribe` attributes y
 
 You can also create a subscribion using extra parameters by JSON encoding a object.
 
-   <div data-cable-subscribe="{&quot;channel&quote;: &quote;ChatChannel&quote;, &quot;room&quote;: &quote;Best Room&quote;}">
+    <div data-cable-subscribe="{&quot;channel&quote;: &quote;ChatChannel&quote;, &quot;room&quote;: &quote;Best Room&quote;}">
       ...
     </div>
 
