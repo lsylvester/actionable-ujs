@@ -1,0 +1,20 @@
+load_paths:
+  - vendor/assets/javascripts
+  - test
+
+logical_paths:
+  - setup.js
+  - cable_ujs.js
+  - test.js
+
+gem_paths:
+  jquery-rails:
+    - vendor/assets/javascripts
+  actioncable:
+    - lib/assets/javascripts
+
+build:
+  logical_paths:
+    - cable_ujs.js
+  path: dist
+  js_compressor: uglifier
