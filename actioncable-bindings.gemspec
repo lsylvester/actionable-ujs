@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'actioncable/ujs/version'
+require 'actioncable/bindings/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "actioncable-ujs"
-  spec.version       = Actioncable::Ujs::VERSION
+  spec.name          = "actioncable-bindings"
+  spec.version       = Actioncable::Bindings::VERSION
   spec.authors       = ["Lachlan Sylvester"]
   spec.email         = ["lachlan.sylvester@hypothetical.com.au"]
 
-  spec.summary       = %q{Unobtrusive bindings for Action Cable}
-  spec.description   = %q{Unobtrusive bindings for Action Cable}
-  spec.homepage      = "https://github.com/lsylvester/actioncable-ujs"
+  spec.summary       = %q{DOM bindings for Action Cable}
+  spec.description   = %q{Manage Action Cable subscriptions using data-* attributues}
+  spec.homepage      = "https://github.com/lsylvester/actioncable-bindings"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

@@ -1,8 +1,8 @@
-# Actioncable::Ujs
+# Actioncable::Bindings
 
 WARNING: This is a work in progress and is currently incomplete. It is not ready for use.
 
-Provides unobtrusive bindings for [Action Cable](https://github.com/rails/actioncable) 
+Provides DOM bindings for [Action Cable](https://github.com/rails/actioncable) 
 
 
 ## Installation
@@ -10,7 +10,7 @@ Provides unobtrusive bindings for [Action Cable](https://github.com/rails/action
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'actioncable-ujs'
+gem 'actioncable-bindings'
 ```
 
 And then execute:
@@ -19,9 +19,9 @@ And then execute:
 
 ## Usage
 
-Add cable-ujs to your `app/assets/javascripts/application.js` file.
+Add cable_bindings to your `app/assets/javascripts/application.js` file.
 
-    //= require cable_ujs
+    //= require cable_bindings
 
 Add a cable metatag to point to your Action Cable server
 
@@ -70,7 +70,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/actioncable-ujs. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/lsylvester/actioncable-bindings. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
 
 
 ## License

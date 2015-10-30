@@ -1,7 +1,7 @@
-require "actioncable/ujs/version"
+require "actioncable/bindings/version"
 
 module Actioncable
-  module Ujs
+  module Bindings
     class Engine < Rails::Engine
     end
   end

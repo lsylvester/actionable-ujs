@@ -4,7 +4,7 @@ load_paths:
 
 logical_paths:
   - setup.js
-  - cable_ujs.js
+  - cable_bindings.js
   - test.js
 
 gem_paths:
@@ -15,6 +15,6 @@ gem_paths:
 
 build:
   logical_paths:
-    - cable_ujs.js
+    - cable_bindings.js
   path: dist
   js_compressor: uglifier
