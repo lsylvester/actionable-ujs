@@ -21,41 +21,54 @@ And then execute:
 
 Add cable_bindings to your `app/assets/javascripts/application.js` file.
 
-    //= require cable_bindings
+```coffee
+//= require cable_bindings
+```
 
 Add a cable metatag to point to your Action Cable server
 
-    <meta name="cable-uri" value="ws://localhost:28080">
+```html
+<meta name="cable-uri" value="ws://localhost:28080">
+```
 
 Then, start creating subscriptions by adding `data-cable-subscribe` attributes your tags, with the value being the name of the channel you want to subscribe to.
 
-
-    <div data-cable-subscribe="ChatChannel">
-      ...
-    </div>
+```html
+<div data-cable-subscribe="ChatChannel">
+  ...
+</div>
+```
 
 You can also create a subscribion using extra parameters by JSON encoding a object.
 
-    <div data-cable-subscribe="{&quot;channel&quote;: &quote;ChatChannel&quote;, &quot;room&quote;: &quote;Best Room&quote;}">
-      ...
-    </div>
+```html
+<div data-cable-subscribe="{&quot;channel&quote;: &quote;ChatChannel&quote;, &quot;room&quote;: &quote;Best Room&quote;}">
+  ...
+</div>
+```
 
 Once you have created a subscription, the element will start triggering `cable:received` events whenever data is broadcast through the channel. You can subscribe to these events with something like
 
-    $(document).on "cabel:received", "#chat", (data)->
-      # Do stuff with data
+```coffee
+$(document).on "cabel:received", "#chat", (data)->
+  # Do stuff with data
+```
 
 ### Performing Actions
 
 You can perform actions on subscriptions that you have made by triggering events on the elements. To perform a action on a subscription trigger the `cable:perform` events, passing in the action name as the first parameter. Additional data can be passed in through the second parameter.
 
-    $("#chat").trigger('cable:perform', "appearOn", "Some Room")
+```coffee
+$("#chat").trigger('cable:perform', "appearOn", "Some Room")
+```
 
 You can add `data-cabel-perform` attributes to elements within the subscription element to automatically trigger `cable:perform` events.
 
 A `a` or `button` element with `data-cable-perform` with perform the action when clicked.
 
-    <a data-cable-perform="away">Appear Away</a>
+```html
+<a data-cable-perform="away">Appear Away</a>
+```
 
 A  `form` element will trigger perform the action when it is submitted, and `input`, `textarea` or  `select` element will trigger the event on change.
 
