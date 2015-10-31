@@ -18,5 +18,7 @@ setupSubscriptions = ->
       connected: ->
         $(element).trigger("cable:connected")
 
+    $(element).on 'click', "[data-cable-action]", (e)->
+      element.subscription.perform $(this).data('cable-action')
 $(document).ready setupConnection
 $(document).on "page:change", setupSubscriptions

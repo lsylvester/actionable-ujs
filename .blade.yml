@@ -12,7 +12,6 @@ gem_paths:
     - vendor/assets/javascripts
   actioncable:
     - lib/assets/javascripts
-
 build:
   logical_paths:
     - cable_bindings.js
