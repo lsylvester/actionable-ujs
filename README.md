@@ -22,7 +22,7 @@ And then execute:
 
 ## Usage
 
-Add cable_bindings to your `app/assets/javascripts/application.js` file after the jQuery require.
+Add cable_bindings to your `app/assets/javascripts/application.js` file after the jQuery require
 
 ```coffee
 //= require jquery
@@ -60,7 +60,15 @@ $(document).on "cable:received", "#chat", (data)->
 
 ### Performing Actions
 
-You can perform actions on subscriptions that you have made by adding `data-cable-action` attributes inside of the element with `data-cable-subscribe`. 
+You can perform actions on a subscription by triggering the `cable:perform` event on the element.
+
+```coffee
+$('#my-subscribed-element').trigger("cable:perform", "myAction")
+```
+
+Any element with a `data-cable-perform` attribute will automatically perform the action in any parent element with a subscription.
+
+For example,
 
 ```html
 <div data-cable-subscribe="ChatChannel">
@@ -68,8 +76,7 @@ You can perform actions on subscriptions that you have made by adding `data-cabl
 </div>
 ```
 
-The action will be performed when the element is clicked.
-
+will perform the `away` action on the `ChatChannel` subscription when the link is clicked.
 
 ## Development
 
