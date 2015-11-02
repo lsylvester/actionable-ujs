@@ -66,7 +66,7 @@ You can perform actions on a subscription by triggering the `cable:perform` even
 $('#my-subscribed-element').trigger("cable:perform", "myAction")
 ```
 
-Any element with a `data-cable-perform` attribute will automatically perform the action in any parent element with a subscription.
+Any element with a `data-cable-perform` attribute will automatically perform the action in any parent element with a subscription when clicked.
 
 For example,
 
