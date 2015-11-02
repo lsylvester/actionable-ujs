@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["lachlan.sylvester@hypothetical.com.au"]
 
   spec.summary       = %q{DOM bindings for Action Cable}
-  spec.description   = %q{Manage Action Cable subscriptions using data-* attributues}
+  spec.description   = %q{Manage Action Cable subscriptions using data-* attributes}
   spec.homepage      = "https://github.com/lsylvester/actioncable-bindings"
   spec.license       = "MIT"
 
