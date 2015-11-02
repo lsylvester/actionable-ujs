@@ -1,9 +1,6 @@
 # Actioncable::Bindings
 
-WARNING: This is a work in progress and is currently incomplete. It is not ready for use.
-
 Provides DOM bindings for [Action Cable](https://github.com/rails/actioncable) 
-
 
 ## Installation
 
