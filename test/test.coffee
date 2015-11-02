@@ -27,7 +27,7 @@ test "it should trigger events on the elements for messages received through the
 
   Cable.boundConsumer.subscriptions.notify("{\"channel\":\"ChatChannel\"}","received", {"message": "Hello"})
 
-test "it should perform actions on the elements for messages received through the channel", ->
+test "it should perform actions when elements with data-cable-action attributes are clicked", ->
   withContent """
     <div id='action-test' data-cable-subscribe='ChatChannel'>
       <a data-cable-action='doAction'>Action</a>
@@ -39,3 +39,17 @@ test "it should perform actions on the elements for messages received through th
     equal action, 'doAction'
 
   $('[data-cable-action]').click()
+
+test "it should perform actions when 'cable:perform' events are triggered on the element", ->
+  withContent """
+    <div id='action-test' data-cable-subscribe='ChatChannel'>
+    </div>
+  """
+
+  subscription = Cable.boundConsumer.subscriptions.findAll("{\"channel\":\"ChatChannel\"}")[0]
+  subscription.perform = (action, data)->
+    equal action, 'doAction'
+
+  $('#action-test').trigger('cable:perform', 'doAction')
+
+
