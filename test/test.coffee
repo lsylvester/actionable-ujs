@@ -2,20 +2,20 @@ withContent = (content)->
   if $("#content").length == 0
     $('body').append('<div id="content"></div>')
   $("#content").html(content)
-  $(document).trigger("page:change")
+  Cable.bindings.refresh()
 
 test "the consumer reads the url from the meta tag", ->
-  equal "ws://localhost:28080", Cable.boundConsumer.url,
+  equal "ws://localhost:28080", Cable.bindings.consumer.url,
 
 test "it should create subscritions for data-cable-subscribe attributes in the dom", ->
   withContent """
     <div data-cable-subscribe='ChatChannel'></div>
   """
 
-  equal Cable.boundConsumer.subscriptions.findAll("{\"channel\":\"ChatChannel\"}").length, 1
+  equal Cable.bindings.consumer.subscriptions.findAll("{\"channel\":\"ChatChannel\"}").length, 1
 
   withContent ""
-  equal Cable.boundConsumer.subscriptions.findAll("{\"channel\":\"ChatChannel\"}").length, 0
+  equal Cable.bindings.consumer.subscriptions.findAll("{\"channel\":\"ChatChannel\"}").length, 0
 
 test "it should trigger events on the elements for messages received through the channel", ->
   withContent """
@@ -25,7 +25,7 @@ test "it should trigger events on the elements for messages received through the
   $('#event-test').on "cable:received", (e, data)->
     deepEqual data, {"message": "Hello"}
 
-  Cable.boundConsumer.subscriptions.notify("{\"channel\":\"ChatChannel\"}","received", {"message": "Hello"})
+  Cable.bindings.consumer.subscriptions.notify("{\"channel\":\"ChatChannel\"}","received", {"message": "Hello"})
 
 test "it should perform actions when elements with data-cable-action attributes are clicked", ->
   withContent """
@@ -34,7 +34,7 @@ test "it should perform actions when elements with data-cable-action attributes 
     </div>
   """
 
-  subscription = Cable.boundConsumer.subscriptions.findAll("{\"channel\":\"ChatChannel\"}")[0]
+  subscription = Cable.bindings.consumer.subscriptions.findAll("{\"channel\":\"ChatChannel\"}")[0]
   subscription.perform = (action, data)->
     equal action, 'doAction'
 
@@ -46,7 +46,7 @@ test "it should perform actions when 'cable:perform' events are triggered on the
     </div>
   """
 
-  subscription = Cable.boundConsumer.subscriptions.findAll("{\"channel\":\"ChatChannel\"}")[0]
+  subscription = Cable.bindings.consumer.subscriptions.findAll("{\"channel\":\"ChatChannel\"}")[0]
   subscription.perform = (action, data)->
     equal action, 'doAction'
 

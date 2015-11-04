@@ -55,6 +55,16 @@ $(document).on "cable:received", "#chat", (data)->
   # Do stuff with data
 ```
 
+### Updating the page.
+
+Whenever the page changes and a `data-cable-subscripe` element has been added to or removed from the page, the bindings need to be updated. You can do this by calling
+
+```coffee
+Cable.bindings.refresh
+```
+
+If you are using Turbolinks, this is automattically done for you whenever the `page:chage` event is triggered.
+
 ### Performing Actions
 
 You can perform actions on a subscription by triggering the `cable:perform` event on the element.
