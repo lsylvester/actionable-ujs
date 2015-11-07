@@ -9,18 +9,20 @@ class Bindings
       if subscription.element and !$.contains(document, subscription.element)
         subscription.unsubscribe()
 
-    for element in $('[data-cable-subscribe]')
-      element.subscription ||= @consumer.subscriptions.create $(element).data('cable-subscribe'),
-        element: element,
+    @buildSubscription(element) for element in $('[data-cable-subscribe]')
 
-        received: (data)->
-          $(element).trigger("cable:received", data)
+  buildSubscription: (element)=>
+    element.subscription ||= @consumer.subscriptions.create $(element).data('cable-subscribe'),
+      element: element,
 
-        connected: ->
-          $(element).trigger("cable:connected")
+      received: (data)->
+        $(element).trigger("cable:received", data)
 
-      $(element).on 'cable:perform', (e, action, params)->
-        element.subscription.perform action, params
+      connected: ->
+        $(element).trigger("cable:connected")
+
+    $(element).on 'cable:perform', (e, action, params)->
+      element.subscription.perform action, params
 
 Cable.bindings = new Bindings
 

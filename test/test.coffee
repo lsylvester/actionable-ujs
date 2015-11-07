@@ -53,3 +53,20 @@ test "it should perform actions when 'cable:perform' events are triggered on the
   $('#action-test').trigger('cable:perform', 'doAction')
 
 
+test "it should trigger events on the on the element that caused the subscription to be created", ->
+  expect 2
+  withContent """
+    <div id='test1' data-cable-subscribe='RoomChannel'>
+    </div>
+    <div id='test2' data-cable-subscribe='MentionChannel'>
+    </div>
+  """
+  $('#test1').on "cable:received", (e, data)->
+    equal data, 1
+
+  $('#test2').on "cable:received", (e, data)->
+    equal data, 2
+
+  Cable.bindings.consumer.subscriptions.notify("{\"channel\":\"RoomChannel\"}","received", 1)
+  Cable.bindings.consumer.subscriptions.notify("{\"channel\":\"MentionChannel\"}","received", 2)
+
