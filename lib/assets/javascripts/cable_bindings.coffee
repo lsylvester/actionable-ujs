@@ -1,4 +1,4 @@
-#= require cable
+#= require action_cable
 
 class Bindings
   setupConsumer: =>
