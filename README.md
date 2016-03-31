@@ -26,21 +26,17 @@ Add cable_bindings to your `app/assets/javascripts/application.js` file after th
 //= require cable_bindings
 ```
 
-Start creating subscriptions by adding `data-cable-subscribe` attributes your tags, with the value being the name of the channel you want to subscribe to.
+TODO: Work out how to set up the cable
+
+Start creating subscriptions by adding `action-cable-subscription` elements with the channel attribute for the channel you want to subscribe to.
 
 ```html
-<div data-cable-subscribe="ChatChannel">
+<action-cable-subscription channel="ChatChannel">
   ...
-</div>
+</action-cable-subscription>
 ```
 
-You can also create a subscribion using extra parameters by JSON encoding a object.
-
-```html
-<div data-cable-subscribe="{&quot;channel&quote;: &quote;ChatChannel&quote;, &quot;room&quote;: &quote;Best Room&quote;}">
-  ...
-</div>
-```
+TODO: Allow passing in params when subscribing to a channel
 
 Once you have created a subscription, the element will start triggering `cable:received` events whenever data is broadcast through the channel. You can subscribe to these events with something like
 
@@ -48,16 +44,6 @@ Once you have created a subscription, the element will start triggering `cable:r
 $(document).on "cable:received", "#chat", (data)->
   # Do stuff with data
 ```
-
-### Updating the page.
-
-Whenever the page changes and a `data-cable-subscripe` element has been added to or removed from the page, the bindings need to be updated. You can do this by calling
-
-```coffee
-Cable.bindings.refresh
-```
-
-If you are using Turbolinks, this is automattically done for you whenever the `page:chage` event is triggered.
 
 ### Performing Actions
 
@@ -72,9 +58,9 @@ Any element with a `data-cable-perform` attribute will automatically perform the
 For example,
 
 ```html
-<div data-cable-subscribe="ChatChannel">
+<action-cable-subscription channel="ChatChannel">
   <a data-cable-perform="away">Appear Away</a>
-</div>
+</action-cable-subscription>
 ```
 
 will perform the `away` action on the `ChatChannel` subscription when the link is clicked.

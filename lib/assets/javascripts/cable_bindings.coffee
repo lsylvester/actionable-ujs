@@ -1,33 +1,24 @@
 #= require action_cable
 
-class Bindings
-  setupConsumer: =>
-    @consumer = ActionCable.createConsumer()
+@cable  = ActionCable.createConsumer()
 
-  refresh: =>
-    for subscription in @consumer.subscriptions.subscriptions
-      if subscription.element and !$.contains(document, subscription.element)
-        subscription.unsubscribe()
 
-    @buildSubscription(element) for element in $('[data-cable-subscribe]')
+class @ActionCableSubscription extends HTMLElement
+    
+  attachedCallback: ->
+    @subscription = cable.subscriptions.create channel: @getAttribute('Channel'),
+      received: (data)=>
+        $(this).trigger("cable:received", data)
+    
+    $(this).on 'cable:perform', (e, action, params)=>
+      console.log(this, @subscription)
+      @subscription.perform action, params
 
-  buildSubscription: (element)=>
-    element.subscription ||= @consumer.subscriptions.create $(element).data('cable-subscribe'),
-      element: element,
+  detachedCallback: ->
+    @subscription.unsubscribe()
 
-      received: (data)->
-        $(element).trigger("cable:received", data)
+document.registerElement 'action-cable-subscription', ActionCableSubscription
 
-      connected: ->
-        $(element).trigger("cable:connected")
-
-    $(element).on 'cable:perform', (e, action, params)->
-      element.subscription.perform action, params
-
-ActionCable.bindings = new Bindings
 
 $(document).on 'click', "[data-cable-action]", (e)->
   $(this).trigger 'cable:perform', $(this).data('cable-action')
-
-$(document).ready ActionCable.bindings.setupConsumer
-$(document).on "page:change", ActionCable.bindings.refresh
