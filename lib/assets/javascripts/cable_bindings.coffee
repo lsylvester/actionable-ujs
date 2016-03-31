@@ -2,7 +2,7 @@
 
 class Bindings
   setupConsumer: =>
-    @consumer = Cable.createConsumer $('meta[name=cable-uri]').attr('value')
+    @consumer = ActionCable.createConsumer $('meta[name=cable-uri]').attr('value')
 
   refresh: =>
     for subscription in @consumer.subscriptions.subscriptions
@@ -24,10 +24,10 @@ class Bindings
     $(element).on 'cable:perform', (e, action, params)->
       element.subscription.perform action, params
 
-Cable.bindings = new Bindings
+ActionCable.bindings = new Bindings
 
 $(document).on 'click', "[data-cable-action]", (e)->
   $(this).trigger 'cable:perform', $(this).data('cable-action')
 
-$(document).ready Cable.bindings.setupConsumer
-$(document).on "page:change", Cable.bindings.refresh
+$(document).ready ActionCable.bindings.setupConsumer
+$(document).on "page:change", ActionCable.bindings.refresh
