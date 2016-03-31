@@ -26,13 +26,7 @@ Add cable_bindings to your `app/assets/javascripts/application.js` file after th
 //= require cable_bindings
 ```
 
-Add a cable metatag to point to your Action Cable server
-
-```html
-<meta name="cable-uri" value="ws://localhost:28080">
-```
-
-Then, start creating subscriptions by adding `data-cable-subscribe` attributes your tags, with the value being the name of the channel you want to subscribe to.
+Start creating subscriptions by adding `data-cable-subscribe` attributes your tags, with the value being the name of the channel you want to subscribe to.
 
 ```html
 <div data-cable-subscribe="ChatChannel">

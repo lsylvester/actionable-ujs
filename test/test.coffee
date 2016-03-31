@@ -4,9 +4,6 @@ withContent = (content)->
   $("#content").html(content)
   ActionCable.bindings.refresh()
 
-test "the consumer reads the url from the meta tag", ->
-  equal "ws://localhost:28080", ActionCable.bindings.consumer.url,
-
 test "it should create subscritions for data-cable-subscribe attributes in the dom", ->
   withContent """
     <div data-cable-subscribe='ChatChannel'></div>

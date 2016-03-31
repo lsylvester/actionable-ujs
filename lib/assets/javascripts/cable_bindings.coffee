@@ -2,7 +2,7 @@
 
 class Bindings
   setupConsumer: =>
-    @consumer = ActionCable.createConsumer $('meta[name=cable-uri]').attr('value')
+    @consumer = ActionCable.createConsumer()
 
   refresh: =>
     for subscription in @consumer.subscriptions.subscriptions
