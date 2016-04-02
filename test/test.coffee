@@ -8,12 +8,12 @@ test "it should create subscritions for action-cable-subscription elements in th
   withContent """
     <action-cable-subscription channel="Chat5Channel"></action-cable-subscription>
   """
-  equal window.cable.subscriptions.findAll("{\"channel\":\"Chat5Channel\"}").length, 1
+  equal document.querySelector('action-cable-connection').cable.subscriptions.findAll("{\"channel\":\"Chat5Channel\"}").length, 1
 
   withContent ""
   done = assert.async()
   requestAnimationFrame(->
-    equal window.cable.subscriptions.findAll("{\"channel\":\"Chat5Channel\"}").length, 0
+    equal document.querySelector('action-cable-connection').cable.subscriptions.findAll("{\"channel\":\"Chat5Channel\"}").length, 0
     done()
   ,100)
 
@@ -24,7 +24,7 @@ test "it should trigger events on the elements for messages received through the
   $('#event-test').on "cable:received", (e, data)->
     deepEqual data, {"message": "Hello"}
 
-  window.cable.subscriptions.notify("{\"channel\":\"Chat4Channel\"}","received", {"message": "Hello"})
+  document.querySelector('action-cable-connection').cable.subscriptions.notify("{\"channel\":\"Chat4Channel\"}","received", {"message": "Hello"})
 
 test "it should perform actions when elements with data-cable-action attributes are clicked", ->
   withContent """
@@ -33,7 +33,7 @@ test "it should perform actions when elements with data-cable-action attributes 
     </action-cable-subscription>
   """
 
-  subscription = window.cable.subscriptions.findAll("{\"channel\":\"Chat3Channel\"}")[0]
+  subscription = document.querySelector('action-cable-connection').cable.subscriptions.findAll("{\"channel\":\"Chat3Channel\"}")[0]
   subscription.perform = (action, data)->
     equal action, 'doAction'
 
@@ -46,7 +46,7 @@ test "it should perform actions when 'cable:perform' events are triggered on the
     </action-cable-subscription>
   """
 
-  subscription = window.cable.subscriptions.findAll("{\"channel\":\"Chat2Channel\"}")[0]
+  subscription = document.querySelector('action-cable-connection').cable.subscriptions.findAll("{\"channel\":\"Chat2Channel\"}")[0]
   subscription.perform = (action, data)->
     equal action, 'doAction'
     done()
@@ -68,6 +68,6 @@ test "it should trigger events on the on the element that caused the subscriptio
   $('#test2').on "cable:received", (e, data)->
     equal data, 2
 
-  window.cable.subscriptions.notify("{\"channel\":\"Room1Channel\"}","received", 1)
-  window.cable.subscriptions.notify("{\"channel\":\"Mention1Channel\"}","received", 2)
+  document.querySelector('action-cable-connection').cable.subscriptions.notify("{\"channel\":\"Room1Channel\"}","received", 1)
+  document.querySelector('action-cable-connection').cable.subscriptions.notify("{\"channel\":\"Mention1Channel\"}","received", 2)
 

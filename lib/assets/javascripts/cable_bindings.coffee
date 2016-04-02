@@ -1,7 +1,18 @@
 #= require action_cable
 
-@cable  = ActionCable.createConsumer()
+class @ActionCableConnection extends HTMLElement
+  attachedCallback: ->
+    if @disconector
+      cancelAnimationFrame(@disconector)
+    else
+      @cable = ActionCable.createConsumer(@getAttribute('url'))
 
+
+  detachedCallback: ->
+    @disconector = requestAnimationFrame =>
+      @cable.disconnect()
+
+document.registerElement 'action-cable-connection', ActionCableConnection
 
 class @ActionCableSubscription extends HTMLElement
     
@@ -15,6 +26,7 @@ class @ActionCableSubscription extends HTMLElement
         subscriptionOptions.channel = @getAttribute('channel')
       else
         subscriptionOptions = {channel: @getAttribute('channel')}
+      cable = document.querySelector('action-cable-connection').cable
       @subscription = cable.subscriptions.create subscriptionOptions,
         received: (data)=>
           $(this).trigger("cable:received", data)
