@@ -26,7 +26,17 @@ Add cable_bindings to your `app/assets/javascripts/application.js` file after th
 //= require cable_bindings
 ```
 
-TODO: Work out how to set up the cable
+Remove the `action_cable_meta_tag` from your `head`, and add a new `action-cable-connection` element to your `body`.
+
+```html
+<action-cable-connection url='/cable'>
+```
+
+If you are using turbolinks, add an `id and a `data-turbolinks-permanent` attribute so that a connection does not need to be reconnected whenever you change pages.
+
+```html
+<action-cable-connection url='/cable' id='cable' data-turbolinks-permanent>
+```
 
 Start creating subscriptions by adding `action-cable-subscription` elements with the channel attribute for the channel you want to subscribe to.
 
