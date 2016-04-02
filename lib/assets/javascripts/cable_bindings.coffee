@@ -6,17 +6,26 @@
 class @ActionCableSubscription extends HTMLElement
     
   attachedCallback: ->
-    @subscription = cable.subscriptions.create channel: @getAttribute('Channel'),
-      received: (data)=>
-        $(this).trigger("cable:received", data)
+    if @unsubscriber
+      cancelAnimationFrame(@unsubscriber)
+    else
+      subscriptionParams = @getAttribute('params')
+      if subscriptionParams
+        subscriptionOptions = JSON.parse(subscriptionParams)
+        subscriptionOptions.channel = @getAttribute('channel')
+      else
+        subscriptionOptions = @getAttribute('channel')
+      @subscription = cable.subscriptions.create subscriptionOptions,
+        received: (data)=>
+          $(this).trigger("cable:received", data)
     
-    $(this).on 'cable:perform', (e, action, params)=>
-      console.log(this, @subscription)
-      @subscription.perform action, params
+      $(this).on 'cable:perform', (e, action, params)=>
+        @subscription.perform action, params
 
   detachedCallback: ->
-    @subscription.unsubscribe()
-
+    @unsubscriber = requestAnimationFrame =>
+      @subscription.unsubscribe()
+      
 document.registerElement 'action-cable-subscription', ActionCableSubscription
 
 
