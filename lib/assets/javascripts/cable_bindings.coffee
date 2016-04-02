@@ -14,11 +14,10 @@ class @ActionCableSubscription extends HTMLElement
         subscriptionOptions = JSON.parse(subscriptionParams)
         subscriptionOptions.channel = @getAttribute('channel')
       else
-        subscriptionOptions = @getAttribute('channel')
+        subscriptionOptions = {channel: @getAttribute('channel')}
       @subscription = cable.subscriptions.create subscriptionOptions,
         received: (data)=>
           $(this).trigger("cable:received", data)
-    
       $(this).on 'cable:perform', (e, action, params)=>
         @subscription.perform action, params
 
