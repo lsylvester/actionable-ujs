@@ -6,34 +6,34 @@ withContent = (content)->
 
 test "it should create subscritions for action-cable-subscription elements in the dom", 2, (assert)->
   withContent """
-    <action-cable-subscription channel="ChatChannel"></action-cable-subscription>
+    <action-cable-subscription channel="Chat5Channel"></action-cable-subscription>
   """
-  equal window.cable.subscriptions.findAll("{\"channel\":\"ChatChannel\"}").length, 1
+  equal window.cable.subscriptions.findAll("{\"channel\":\"Chat5Channel\"}").length, 1
 
   withContent ""
   done = assert.async()
   requestAnimationFrame(->
-    equal window.cable.subscriptions.findAll("{\"channel\":\"ChatChannel\"}").length, 0
+    equal window.cable.subscriptions.findAll("{\"channel\":\"Chat5Channel\"}").length, 0
     done()
   ,100)
 
 test "it should trigger events on the elements for messages received through the channel", ->
   withContent """
-    <action-cable-subscription id='event-test' channel='ChatChannel'>
+    <action-cable-subscription id='event-test' channel='Chat4Channel'>
   """
   $('#event-test').on "cable:received", (e, data)->
     deepEqual data, {"message": "Hello"}
 
-  window.cable.subscriptions.notify("{\"channel\":\"ChatChannel\"}","received", {"message": "Hello"})
+  window.cable.subscriptions.notify("{\"channel\":\"Chat4Channel\"}","received", {"message": "Hello"})
 
 test "it should perform actions when elements with data-cable-action attributes are clicked", ->
   withContent """
-    <action-cable-subscription id='action-test' channel='ChatChannel'>
+    <action-cable-subscription id='action-test' channel='Chat3Channel'>
       <a data-cable-action='doAction'>Action</a>
     </action-cable-subscription>
   """
 
-  subscription = window.cable.subscriptions.findAll("{\"channel\":\"ChatChannel\"}")[0]
+  subscription = window.cable.subscriptions.findAll("{\"channel\":\"Chat3Channel\"}")[0]
   subscription.perform = (action, data)->
     equal action, 'doAction'
 
@@ -42,11 +42,11 @@ test "it should perform actions when elements with data-cable-action attributes 
 test "it should perform actions when 'cable:perform' events are triggered on the element", (assert)->
   done = assert.async()
   withContent """
-    <action-cable-subscription id='action-test' channel='ChatChannel'>
+    <action-cable-subscription id='action-test' channel='Chat2Channel'>
     </action-cable-subscription>
   """
 
-  subscription = window.cable.subscriptions.findAll("{\"channel\":\"ChatChannel\"}")[0]
+  subscription = window.cable.subscriptions.findAll("{\"channel\":\"Chat2Channel\"}")[0]
   subscription.perform = (action, data)->
     equal action, 'doAction'
     done()
@@ -57,9 +57,9 @@ test "it should perform actions when 'cable:perform' events are triggered on the
 test "it should trigger events on the on the element that caused the subscription to be created", ->
   expect 2
   withContent """
-    <action-cable-subscription id='test1' channel='RoomChannel'>
+    <action-cable-subscription id='test1' channel='Room1Channel'>
     </action-cable-subscription>
-    <action-cable-subscription id='test2' channel='MentionChannel'>
+    <action-cable-subscription id='test2' channel='Mention1Channel'>
     </action-cable-subscription>
   """
   $('#test1').on "cable:received", (e, data)->
@@ -68,6 +68,6 @@ test "it should trigger events on the on the element that caused the subscriptio
   $('#test2').on "cable:received", (e, data)->
     equal data, 2
 
-  window.cable.subscriptions.notify("{\"channel\":\"RoomChannel\"}","received", 1)
-  window.cable.subscriptions.notify("{\"channel\":\"MentionChannel\"}","received", 2)
+  window.cable.subscriptions.notify("{\"channel\":\"Room1Channel\"}","received", 1)
+  window.cable.subscriptions.notify("{\"channel\":\"Mention1Channel\"}","received", 2)
 
