@@ -48,8 +48,12 @@ class @ActionCableSubscription extends HTMLElement
       rejected: => @rejected()
 
   createdCallback: ->
-    $(this).on 'cable:perform', (e, action, params)=>
-      @subscription?.perform action, params
+    $(this).on 'cable:perform', (event, action, params)=> 
+      event.stopImmediatePropagation()
+      @perform(action, params)
+    
+  perform: (action, params)->
+    @subscription?.perform action, params
 
   attachedCallback: ->
     if @unsubscriber
