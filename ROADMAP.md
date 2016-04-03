@@ -5,7 +5,6 @@
 
     <action-cable-subscription connection='special' ...>
 
-* [ ] Add state attributes to cables and subscriptions to allow easy detection of disconnects
 * [ ] Support updating subscriptions/connections when the attributes change.
 * [ ] Make forms perform actions on submit instead of click
 * [ ] Allow events that perform actions to be customized with `data-cable-on` attributes.

@@ -15,7 +15,7 @@ class @ActionCableConnection extends HTMLElement
 document.registerElement 'action-cable-connection', ActionCableConnection
 
 class @ActionCableSubscription extends HTMLElement
-    
+
   attachedCallback: ->
     if @unsubscriber
       cancelAnimationFrame(@unsubscriber)
@@ -30,6 +30,22 @@ class @ActionCableSubscription extends HTMLElement
       @subscription = cable.subscriptions.create subscriptionOptions,
         received: (data)=>
           $(this).trigger("cable:received", data)
+
+        # Called when the subscription is ready for use on the server
+        connected: =>
+          @setAttribute("state", "connected")
+          $(this).trigger("cable:connected")
+
+        # Called when the WebSocket connection is closed
+        disconnected: =>
+          @setAttribute("state", "disconnected")
+          $(this).trigger("cable:disconnected")
+
+        # Called when the subscription is rejected by the server
+        rejected: =>
+          @setAttribute("state", "rejected")
+          $(this).trigger("cable:rejected")
+
       $(this).on 'cable:perform', (e, action, params)=>
         @subscription.perform action, params
 
