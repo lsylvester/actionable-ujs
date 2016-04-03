@@ -16,42 +16,51 @@ document.registerElement 'action-cable-connection', ActionCableConnection
 
 class @ActionCableSubscription extends HTMLElement
 
+  getSubscriptionOptions: ->
+    subscriptionParams = @getAttribute('params')
+    if subscriptionParams
+      subscriptionOptions = JSON.parse(subscriptionParams)
+      subscriptionOptions.channel = @getAttribute('channel')
+    else
+      subscriptionOptions = {channel: @getAttribute('channel')}
+    subscriptionOptions
+  
+  received: (data)->
+    $(this).trigger("cable:received", data)
+  
+  setState: (state)->
+    @setAttribute("state", state)
+    $(this).trigger("cable:#{state}")
+  
+  connected: -> @setState("connected")
+
+  disconnected: -> @setState("disconnected")
+    
+  rejected: -> @setState("rejected")
+
+  getCable: -> document.querySelector('action-cable-connection').cable
+    
+  createSubscription: ->
+    @subscription = @getCable().subscriptions.create @getSubscriptionOptions(),
+      received: (data)=> @received(data)
+      connected: => @connected()
+      disconnected: => @disconnected()
+      rejected: => @rejected()
+
+  createdCallback: ->
+    $(this).on 'cable:perform', (e, action, params)=>
+      @subscription?.perform action, params
+
   attachedCallback: ->
     if @unsubscriber
       cancelAnimationFrame(@unsubscriber)
     else
-      subscriptionParams = @getAttribute('params')
-      if subscriptionParams
-        subscriptionOptions = JSON.parse(subscriptionParams)
-        subscriptionOptions.channel = @getAttribute('channel')
-      else
-        subscriptionOptions = {channel: @getAttribute('channel')}
-      cable = document.querySelector('action-cable-connection').cable
-      @subscription = cable.subscriptions.create subscriptionOptions,
-        received: (data)=>
-          $(this).trigger("cable:received", data)
-
-        # Called when the subscription is ready for use on the server
-        connected: =>
-          @setAttribute("state", "connected")
-          $(this).trigger("cable:connected")
-
-        # Called when the WebSocket connection is closed
-        disconnected: =>
-          @setAttribute("state", "disconnected")
-          $(this).trigger("cable:disconnected")
-
-        # Called when the subscription is rejected by the server
-        rejected: =>
-          @setAttribute("state", "rejected")
-          $(this).trigger("cable:rejected")
-
-      $(this).on 'cable:perform', (e, action, params)=>
-        @subscription.perform action, params
+      @createSubscription()
 
   detachedCallback: ->
     @unsubscriber = requestAnimationFrame =>
       @subscription.unsubscribe()
+      @subscription = null
       
 document.registerElement 'action-cable-subscription', ActionCableSubscription
 
