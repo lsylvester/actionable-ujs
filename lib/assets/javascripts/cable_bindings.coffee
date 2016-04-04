@@ -53,11 +53,6 @@ class @ActionCableSubscription extends HTMLElement
       connected: => @connected()
       disconnected: => @disconnected()
       rejected: => @rejected()
-
-  createdCallback: ->
-    $(this).on 'cable:perform', (event, action, params)=> 
-      event.stopImmediatePropagation()
-      @perform(action, params)
     
   perform: (action, params)->
     @subscription?.perform action, params
@@ -75,6 +70,3 @@ class @ActionCableSubscription extends HTMLElement
       
 document.registerElement 'action-cable-subscription', ActionCableSubscription
 
-
-$(document).on 'click', "[data-cable-action]", (e)->
-  $(this).trigger 'cable:perform', $(this).data('cable-action')

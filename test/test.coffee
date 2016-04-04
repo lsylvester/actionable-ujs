@@ -26,19 +26,6 @@ test "it should trigger events on the elements for messages received through the
 
   document.querySelector('action-cable-connection').cable.subscriptions.notify("{\"channel\":\"Chat4Channel\"}","received", {"message": "Hello"})
 
-test "it should perform actions when elements with data-cable-action attributes are clicked", ->
-  withContent """
-    <action-cable-subscription id='action-test' channel='Chat3Channel'>
-      <a data-cable-action='doAction'>Action</a>
-    </action-cable-subscription>
-  """
-
-  subscription = document.querySelector('action-cable-connection').cable.subscriptions.findAll("{\"channel\":\"Chat3Channel\"}")[0]
-  subscription.perform = (action, data)->
-    equal action, 'doAction'
-
-  $('[data-cable-action]').click()
-
 test "it should perform actions when 'cable:perform' events are triggered on the element", (assert)->
   done = assert.async()
   withContent """
@@ -50,8 +37,7 @@ test "it should perform actions when 'cable:perform' events are triggered on the
   subscription.perform = (action, data)->
     equal action, 'doAction'
     done()
-
-  $('#action-test').trigger('cable:perform', 'doAction')
+  document.getElementById("action-test").perform("doAction")
 
 
 test "it should trigger events on the on the element that caused the subscription to be created", ->

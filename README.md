@@ -57,23 +57,11 @@ $(document).on "cable:received", "#chat", (data)->
 
 ### Performing Actions
 
-You can perform actions on a subscription by triggering the `cable:perform` event on the element.
+You can perform actions on a subscription by calling `perform` on the element.
 
 ```coffee
-$('#my-subscribed-element').trigger("cable:perform", "myAction")
+document.findElementById('my-id').perform("myAction", data)
 ```
-
-Any element with a `data-cable-perform` attribute will automatically perform the action in any parent element with a subscription when clicked.
-
-For example,
-
-```html
-<action-cable-subscription channel="ChatChannel">
-  <a data-cable-perform="away">Appear Away</a>
-</action-cable-subscription>
-```
-
-will perform the `away` action on the `ChatChannel` subscription when the link is clicked.
 
 ## Development
 
