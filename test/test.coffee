@@ -59,3 +59,11 @@ test "it should trigger events on the on the element that caused the subscriptio
   document.querySelector('action-cable-connection').cable.subscriptions.notify("{\"channel\":\"Room1Channel\"}","received", 1)
   document.querySelector('action-cable-connection').cable.subscriptions.notify("{\"channel\":\"Mention1Channel\"}","received", 2)
 
+test "it should use the named cable", ->
+  expect 1
+  withContent """
+    <action-cable-connection name='specialCable'></action-cable-connection>
+    <action-cable-subscription id='test1' channel='Room1Channel' cable="specialCable">
+    </action-cable-subscription>
+  """
+  equal document.querySelector('[name="specialCable"]').cable, document.getElementById("test1").getCable()

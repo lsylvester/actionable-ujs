@@ -10,7 +10,7 @@ class @ActionCableConnection extends HTMLElement
 
   detachedCallback: ->
     @disconector = requestAnimationFrame =>
-      @cable.disconnect()
+      @cable?.disconnect()
 
 document.registerElement 'action-cable-connection', ActionCableConnection
 
@@ -45,7 +45,12 @@ class @ActionCableSubscription extends HTMLElement
     
   rejected: -> @setState("rejected")
 
-  getCable: -> document.querySelector('action-cable-connection').cable
+  getCable: -> 
+    cableName = @getAttribute("cable")
+    if cableName
+      document.querySelector("action-cable-connection[name='#{cableName}']").cable
+    else    
+      document.querySelector('action-cable-connection:not([name])').cable
     
   createSubscription: ->
     @subscription = @getCable().subscriptions.create @getSubscriptionOptions(),
