@@ -26,11 +26,18 @@ class @ActionCableSubscription extends HTMLElement
     subscriptionOptions
   
   received: (data)->
-    $(this).trigger("cable:received", data)
+    @trigger("cable:received", data)
   
   setState: (state)->
     @setAttribute("state", state)
-    $(this).trigger("cable:#{state}")
+    @trigger("cable:#{state}")
+  
+  trigger: (eventName, data={})->
+    event = document.createEvent("Events")
+    event.initEvent(eventName, true, true)
+    event.data = data ? {}
+    @dispatchEvent(event)
+    event
   
   connected: -> @setState("connected")
 

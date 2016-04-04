@@ -21,8 +21,8 @@ test "it should trigger events on the elements for messages received through the
   withContent """
     <action-cable-subscription id='event-test' channel='Chat4Channel'>
   """
-  $('#event-test').on "cable:received", (e, data)->
-    deepEqual data, {"message": "Hello"}
+  $('#event-test').on "cable:received", (event)->
+    deepEqual event.originalEvent.data, {"message": "Hello"}
 
   document.querySelector('action-cable-connection').cable.subscriptions.notify("{\"channel\":\"Chat4Channel\"}","received", {"message": "Hello"})
 
@@ -62,11 +62,11 @@ test "it should trigger events on the on the element that caused the subscriptio
     <action-cable-subscription id='test2' channel='Mention1Channel'>
     </action-cable-subscription>
   """
-  $('#test1').on "cable:received", (e, data)->
-    equal data, 1
+  $('#test1').on "cable:received", (e)->
+    equal e.originalEvent.data, 1
 
-  $('#test2').on "cable:received", (e, data)->
-    equal data, 2
+  $('#test2').on "cable:received", (e)->
+    equal e.originalEvent.data, 2
 
   document.querySelector('action-cable-connection').cable.subscriptions.notify("{\"channel\":\"Room1Channel\"}","received", 1)
   document.querySelector('action-cable-connection').cable.subscriptions.notify("{\"channel\":\"Mention1Channel\"}","received", 2)
