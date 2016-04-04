@@ -1,8 +1,10 @@
 withContent = (content)->
-  if $("#content").length == 0
-    $('body').append('<div id="content"></div>')
-  $("#content").html(content)
-  # ActionCable.bindings.refresh()
+  contentElement = document.getElementById('content')
+  unless contentElement
+    contentElement = document.createElement("div"); 
+    contentElement.setAttribute("id", "content")
+    document.querySelector('body').appendChild(contentElement)
+  contentElement.innerHTML = content
 
 test "it should create subscritions for action-cable-subscription elements in the dom", 2, (assert)->
   withContent """

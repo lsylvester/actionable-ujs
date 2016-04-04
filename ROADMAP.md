@@ -6,4 +6,3 @@
     <action-cable-subscription connection='special' ...>
 
 * [ ] Support updating subscriptions/connections when the attributes change.
-* [ ] Remove jQuery dependency

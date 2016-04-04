@@ -1,13 +1,10 @@
 load_paths:
   - lib/assets/javascripts
   - test
-  - jquery-rails:
-    - vendor/assets/javascripts
   - actioncable:
     - app/assets/javascripts
 
 logical_paths:
-  - setup.js
   - cable_bindings.js
   - test.js
 
